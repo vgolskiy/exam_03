@@ -19,6 +19,23 @@ typedef struct	s_z
 	char		ch;
 }				t_z;
 
+static void	init_back(t_b *b)
+{
+	b->w = 0;
+	b->h = 0;
+	b->ch = 0;
+}
+
+static void	clear_zone(t_z *z)
+{
+	z->t = 0;
+	z->x = 0;
+	z->y = 0;
+	z->w = 0;
+	z->h = 0;
+	z->ch = 0;
+}
+
 static int	ft_strlen(char *s)
 {
 	int		i;
@@ -79,20 +96,15 @@ static int	verify_zone(t_z *z)
 	return (0);
 }
 
-static int	get_back(FILE *f, t_b *b)
-{
-	if (fscanf(f, "%d %d %c\n", &b->w, &b->h, &b->ch) != 3)
-		return (0);
-	if (!verify_back(b))
-		return (0);
-	return (1);
-}
-
-static char	*draw_back(t_b *b)
+static char	*get_back(FILE *f, t_b *b)
 {
 	int		i;
 	char	*pic;
 
+	if (fscanf(f, "%d %d %c\n", &b->w, &b->h, &b->ch) != 3)
+		return (00);
+	if (!verify_back(b))
+		return (00);
 	if (!(pic = (char *)ft_calloc(b->w * b->h + 1, sizeof(char))))
 		return (00);
 	i = -1;
@@ -139,6 +151,7 @@ static int	draw_zones(FILE *f, char **pic, t_b *b)
 	t_z	z;
 	int	mark;
 
+	clear_zone(&z);
 	while ((mark = fscanf(f, "%c %f %f %f %f %c\n", &z.t, &z.x, &z.y, &z.w, &z.h, &z.ch)) == 6)
 	{
 		if (!verify_zone(&z))
@@ -162,13 +175,6 @@ static void	put_pic(char *pic, t_b *b)
 	}
 }
 
-static void	init_struct(t_b *b)
-{
-	b->w = 0;
-	b->h = 0;
-	b->ch = 0;
-}
-
 int			main(int argc, char **argv)
 {
 	t_b		b;
@@ -181,11 +187,9 @@ int			main(int argc, char **argv)
 		return (ft_error("Error: argument\n", f, pic));
 	if (!(f = fopen(argv[1], "r")))
 		return (ft_error("Error: Operation file corrupted\n", f, pic));
-	init_struct(&b);
-	if (!get_back(f, &b))
+	init_back(&b);
+	if (!(pic = get_back(f, &b)))
 		return (ft_error("Error: Operation file corrupted\n", f, pic));
-	if (!(pic = draw_back(&b)))
-		return (ft_error("Error: malloc failed\n", f, pic));
 	if (!draw_zones(f, &pic, &b))
 		return (ft_error("Error: Operation file corrupted\n", f, pic));
 	put_pic(pic, &b);
