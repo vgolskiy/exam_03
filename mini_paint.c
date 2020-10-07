@@ -75,7 +75,7 @@ static void	clear_all(FILE *f, char *pic)
 static int	ft_error(char *s, FILE *f, char *pic)
 {
 	clear_all(f, pic);
-	write(2, s, ft_strlen(s));
+	write(1, s, ft_strlen(s));
 	return (1);
 }
 
