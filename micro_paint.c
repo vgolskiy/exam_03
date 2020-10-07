@@ -17,7 +17,6 @@ typedef struct	s_z
 	float		x;
 	float		y;
 	char		ch;
-	struct s_z	*next;
 }				t_z;
 
 static int	ft_strlen(char *s)
