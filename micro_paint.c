@@ -165,12 +165,12 @@ static int	draw_zones(FILE *f, char **pic, t_b *b)
 
 static void	put_pic(char *pic, t_b *b)
 {
-	int	i;
+	int	j;
 
-	i = -1;
-	while (++i < b->h)
+	j = -1;
+	while (++j < b->h)
 	{
-		write(1, pic + (i * b->w), b->w);
+		write(1, pic + (j * b->w), b->w);
 		write(1, "\n", 1);
 	}
 }
